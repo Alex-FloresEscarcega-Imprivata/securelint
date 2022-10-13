@@ -1,0 +1,2 @@
+; Catch Intellij NotNull or Nullable annotations
+((marker_annotation)@captureIntelliJNullAnnotations (#match? @captureIntelliJNullAnnotations "Nullable|NotNull"))
