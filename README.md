@@ -8,7 +8,7 @@
 
 Note: if adding new query rule, you have to rebuild container.
 
-`docker run -v `pwd`/inputs:/usr/src/securelint/inputs/ securelint:latest`
+```docker run -v `pwd`/inputs:/usr/src/securelint/inputs/ securelint:latest```
 
 
 ## Debugging query example
