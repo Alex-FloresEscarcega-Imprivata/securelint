@@ -1,5 +1,5 @@
 # Setup
-`docker -t securelint:latest build .`
+`docker build -t securelink:latest .`
 
 # Usage
 * Add your java linting rule in rules/java-rules.txt
@@ -7,13 +7,17 @@
 * mount inputs files in a inputs directory
 
 Note: if adding new query rule, you have to rebuild container.
+```
+chmod u+x query.sh
+./query.sh <code directory> <file paths to query>...
+```
 
-```docker run -v `pwd`/inputs:/usr/src/securelint/inputs/ securelint:latest```
+```./query.sh /Users/afloresescarcega/REPOS/parent/ '/Users/afloresescarcega/REPOS/parent/**/*.java'```
 
 
 ## Debugging query example
 `docker run -it --entrypoint=/bin/bash securelint:latest`
-`tree-sitter query 'rules/java-rules.txt' 'inputs/StorageConfigurationServiceTest.java'`
+`tree-sitter query 'rules/java-rules.txt' 'some-file.java'`
 
 # Crafting a parser
 Very quick tips to get you started
