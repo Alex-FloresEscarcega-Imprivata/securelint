@@ -223,6 +223,6 @@ for line in sys.stdin:
         capture_dict[key] = value
 
   
-
+output = {"queries" : output}
 json_output = json.dumps(output, indent=4, cls=RangeSetEncoder)
 print(json_output)
