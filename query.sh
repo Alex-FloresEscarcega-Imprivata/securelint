@@ -13,6 +13,13 @@ fi
 FILES=()
 LINES_EDITED=""
 
+temp_rules_file=$(mktemp)
+real_rules_file="/Users/afloresescarcega/REPOS/securelint/rules/java-rules.txt"
+
+while IFS= read -r line; do
+  echo "$line" >> "$temp_rules_file"
+done < "$real_rules_file"
+
 while getopts "dg" opt; do
   case ${opt} in
     d )
@@ -38,9 +45,10 @@ fi
 
 PARENT_JSON="{}"
 
-QUERY_RESULT=$(docker run -it -v "${DIR}":"${DIR}" securelint:latest query --test 'rules/java-rules.txt' ${FILES[@]} | /Users/afloresescarcega/REPOS/securelint/consume_query.py)
+QUERY_RESULT=$(docker run -v "${temp_rules_file}":"/rules/${temp_rules_file}" -v "${DIR}":"${DIR}" securelint:latest query --test "/rules/${temp_rules_file}" ${FILES[@]} | /Users/afloresescarcega/REPOS/securelint/consume_query.py)
 PARENT_JSON=$(jq --argjson QUERY "$QUERY_RESULT" '. + $QUERY' <<< "$QUERY_RESULT")
 
+rm "$temp_rules_file"
 while read -r lines_edited_line; do
   filename="$DIR/$(echo "$lines_edited_line" | cut -d' ' -f1)"
   start_line="$(echo "$lines_edited_line" | cut -d' ' -f2)"
