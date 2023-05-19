@@ -131,3 +131,4 @@ dist
 inputs/
 .idea/
 securelint.iml
+__pycache__/
