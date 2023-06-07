@@ -25,17 +25,22 @@ def overlaps(query_file_ranges, file_ranges):
     return False
 
 
-for query in data["queries"]:
-    if query["path"] not in file_and_ranges.keys():
-        continue
-    if len(query["file_range_set"]) == 0:
-        continue
-    query_file_range = RangeSet()
-    for r in query["file_range_set"]:
-        query_file_range.add(r["start"], r["end"])
+if len(data) > 1:  # git mode
+    for query in data["queries"]:
+        if query["path"] not in file_and_ranges.keys():
+            continue
+        if len(query["file_range_set"]) == 0:
+            continue
+        query_file_range = RangeSet()
+        for r in query["file_range_set"]:
+            query_file_range.add(r["start"], r["end"])
 
-    if overlaps(query_file_range, file_and_ranges):
+        if overlaps(query_file_range, file_and_ranges):
+            output[query["path"]] = query
+else:  # not filtering on git output
+    for query in data["queries"]:
         output[query["path"]] = query
 
 json_output = json.dumps(output, indent=4)
 print(json_output)
+sys.stdout.flush()
